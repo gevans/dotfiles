@@ -9,75 +9,62 @@ else
   git="/usr/bin/git"
 fi
 
-git_branch() {
-  echo $($git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
+# Host - Compressed and color-coded per host_repr array
+# if not found, regular hostname in default color
+prompt_host() {
+  typeset -A host_repr
+  host_repr=('gevans-laptop' 'macbook-pro')
+  echo "@${host_repr[$(hostname)]:-$(hostname)}%{$reset_color%}"
 }
 
-git_dirty() {
-  st=$($git status 2>/dev/null | tail -n 1)
-  if [[ $st == "" ]]
-  then
-    echo ""
-  else
-    if [[ "$st" =~ ^nothing ]]
-    then
-      echo "on %{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
-    else
-      echo "on %{$fg_bold[red]%}$(git_prompt_info)%{$reset_color%}"
-    fi
-  fi
+# User - Color-coded by privileges
+prompt_user() {
+  echo "%(!.%{$fg[blue]%}.%{$fg[blue]%})%n%{$reset_color%}"
 }
 
-git_prompt_info () {
- ref=$($git symbolic-ref HEAD 2>/dev/null) || return
-# echo "(%{\e[0;33m%}${ref#refs/heads/}%{\e[0m%})"
- echo "${ref#refs/heads/}"
+# Time - Color-coded by last return code
+prompt_time() {
+  echo "%(?.%{$fg[green]%}.%{$fg[red]%})%*%{$reset_color%}"
 }
 
-unpushed () {
-  $git cherry -v @{upstream} 2>/dev/null
+# Compacted $PWD
+prompt_pwd() {
+  echo "%{$fg[magenta]%}%c%{$reset_color%}"
 }
 
-need_push () {
-  if [[ $(unpushed) == "" ]]
-  then
-    echo " "
-  else
-    echo " with %{$fg_bold[magenta]%}unpushed%{$reset_color%} "
-  fi
-}
-
-ruby_version() {
+prompt_ruby() {
   if (( $+commands[rbenv] ))
   then
     echo "$(rbenv version | awk '{print $1}')"
   fi
 
-  if (( $+commands[rvm-prompt] ))
+  if (( $+commands[rvm] ))
   then
     echo "$(rvm-prompt | awk '{print $1}')"
   fi
 }
 
-rb_prompt() {
-  if ! [[ -z "$(ruby_version)" ]]
+prompt_git() {
+  ref=$(git symbolic-ref HEAD 2>/dev/null) || return
+
+  dirty=$($git status 2>/dev/null | tail -n 1)
+  color="%{$fg[black]%}"
+  if [[ $dirty =~ ^nothing ]]
   then
-    echo "%{$fg_bold[yellow]%}$(ruby_version)%{$reset_color%} "
+    color="%{$fg[green]%}"
+    dirty=""
   else
-    echo ""
+    color="%{$fg[yellow]%}"
+    dirty="*"
   fi
+
+  unpushed=$($git cherry -v @{upstream} 2>/dev/null)
+  if [[ $unpushed != "" ]]
+  then
+    color="%{$fg[yellow]%}"
+  fi
+
+  echo "[${color}${ref#refs/heads/}%{$reset_color%}${dirty}]"
 }
 
-directory_name() {
-  echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
-}
-
-export PROMPT=$'\n$(rb_prompt)in $(directory_name) $(git_dirty)$(need_push)\n› '
-set_prompt () {
-  export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
-}
-
-precmd() {
-  title "zsh" "%m" "%55<...<%~"
-  set_prompt
-}
+PROMPT=$'\n$(prompt_time) $(prompt_user)$(prompt_host):$(prompt_pwd) $(prompt_ruby)\n$(prompt_git) %% '
