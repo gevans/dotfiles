@@ -139,5 +139,12 @@ then
   fi
 fi
 
+# Ripped from https://github.com/thoughtbot/laptop/blob/master/mac#L31:L34
+if [ "$(uname -s)" == "Darwin" ] && [[ -f /etc/zshenv ]]
+then
+  info "Fixing OSX zsh environment bug ..."
+  sudo mv /etc/{zshenv,zshrc}
+fi
+
 echo ''
 echo '  All installed!'
