@@ -8,3 +8,8 @@ then
   alias ll="gls -l --color"
   alias la='gls -A --color'
 fi
+
+if $(gdircolors &>/dev/null)
+then
+  eval `gdircolors $ZSH/system/dircolors-solarized/dircolors.ansi-dark`
+fi
