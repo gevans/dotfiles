@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+module Prettify
+  extend self
+
+  def usage
+    <<-USAGE.gsub(/^[ \t]{6}/, '')
+      Usage: prettify FORMAT [FILE]
+      Supported formats are: json
+
+      Examples:
+
+        $ curl http://example.com/api/resource.json | prettify json
+        $ prettify xml messy-file.xml
+    USAGE
+  end
+
+  def json(data)
+    require 'json'
+    JSON.pretty_generate JSON.load(data)
+  end
+end
+
+format = ARGV.shift
+
+unless format
+  puts Prettify.usage
+  exit
+end
+
+path = ARGV.shift
+file = STDIN
+
+if path
+  file = File.read(path)
+end
+
+puts Prettify.send(format.to_sym, file)
