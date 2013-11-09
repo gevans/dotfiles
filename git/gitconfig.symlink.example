@@ -9,16 +9,21 @@
 [credential]
         helper = GIT_CREDENTIAL_HELPER
 [alias]
-        co = checkout
+        co      = checkout
         promote = !$ZSH/bin/git-promote
         wtf     = !$ZSH/bin/git-wtf
         rank-contributers = !$ZSH/bin/git-rank-contributers
         count   = !git shortlog -sn
+        lg      = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 [color]
         diff = auto
         status = auto
         branch = auto
         ui = true
+[color "status"]
+        added = yellow
+        changed = green
+        untracked = cyan
 [core]
         excludesfile = ~/.gitignore
         editor = vim

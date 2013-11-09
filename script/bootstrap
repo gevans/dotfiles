@@ -36,6 +36,10 @@ setup_gitconfig () {
     then
       git_credential='osxkeychain'
     fi
+    if [ -f /opt/boxen/bin/boxen-git-credential ]
+    then
+      git_credential='/opt/boxen/bin/boxen-git-credential'
+    fi
 
     user ' - What is your github author name?'
     read -e git_authorname
