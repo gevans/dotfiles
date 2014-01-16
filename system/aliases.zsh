@@ -13,3 +13,8 @@ if $(gdircolors &>/dev/null)
 then
   eval `gdircolors $ZSH/system/dircolors-solarized/dircolors.ansi-dark`
 fi
+
+if $(ggrep &>/dev/null)
+then
+  alias grep="ggrep --color"
+fi
