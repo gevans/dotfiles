@@ -1,1 +1,5 @@
-[ -d "/usr/local/go" ] && export GOROOT="/usr/local/go"
+[ -d "/usr/local/go" ] && GOROOT="/usr/local/go"
+GOPATH="$HOME/Code/go"
+PATH="$GOPATH/bin:$PATH"
+
+export GOROOT GOPATH
