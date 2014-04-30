@@ -38,3 +38,6 @@ do
 done
 
 unset config_files
+
+# Add ./bin to executables path
+export PATH="bin:$PATH"

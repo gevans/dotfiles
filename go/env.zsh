@@ -1,5 +1,6 @@
-[ -d "/usr/local/go" ] && GOROOT="/usr/local/go"
-GOPATH="$HOME/Code/go"
-PATH="$GOPATH/bin:$PATH"
+if [ -d "/usr/local/go" ]; then
+  GOROOT="/usr/local/go"
+  GOPATH="$HOME/Code/go"
 
-export GOROOT GOPATH
+  export GOROOT GOPATH
+fi
