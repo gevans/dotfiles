@@ -28,8 +28,11 @@ set-option -ga update-environment ' COLORFGBG ITERM_PROFILE ITERM_SESSION_ID TER
 
 # Start tab numbering at 1
 set -g base-index 1
+set -g pane-base-index 1
 
-# Allow for faster key repition
+set-option -g renumber-windows on
+
+# Allow for faster key repetition
 set -s escape-time 0
 
 # Disable automatic renaming

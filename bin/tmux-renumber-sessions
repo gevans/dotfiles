@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# Find numeric sessions and convert them to integers
+sessions = `tmux list-sessions`.split("\n").collect { |s|
+  v = s[/^\d+/]; v.nil? ? v : v.to_i
+}
+
+# Renumber sessions
+sessions.each_with_index do |session, index|
+  # Skip named sessions
+  next if session.nil?
+
+  unless session == index || sessions.include?(index)
+    `tmux rename-session -t #{session} #{index}`
+  end
+end
