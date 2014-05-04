@@ -22,6 +22,10 @@ set-option -g mouse-select-pane on
 set-option -g mouse-resize-pane on
 set-option -g mouse-select-window on
 
+# Update terminal and color info in new sessions to allow colorscheme detection
+# in vim and various customizations based on terminal program and iTerm profile.
+set-option -ga update-environment ' COLORFGBG ITERM_PROFILE ITERM_SESSION_ID TERM_PROGRAM'
+
 # Start tab numbering at 1
 set -g base-index 1
 
