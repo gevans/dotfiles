@@ -1,6 +1,6 @@
-if [ -d "/usr/local/go" ]; then
-  GOROOT="/usr/local/go"
-  GOPATH="$HOME/Code/go"
+# Expects Go to be installed through Homebrew
+GOPATH="$HOME/Code/go"
+GOROOT="$(greadlink -f $(brew --prefix go))/libexec"
+PATH="$GOROOT/bin:$PATH"
 
-  export GOROOT GOPATH
-fi
+export GOROOT GOPATH
