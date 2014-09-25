@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+#
+# pbflix
+# Gabe Evans (https://github.com/gevans)
+#
+# Uses peerflix to stream a torrent from a URL, file name, or magnet link
+# from clipboard.
+
+require 'shellwords'
+
+PBPASTE = `which pbpaste`.chomp
+
+if PBPASTE.empty?
+  puts 'Could not find pbpaste. Are you running OS X?'
+  exit -1
+end
+
+PEERFLIX = `which peerflix`.chomp
+
+if PEERFLIX.empty?
+  puts 'You need to install peerflix: npm install -g peerflix'
+  exit -1
+end
+
+USAGE = 'Usage: pbflix [options]'
+
+if ARGV.delete('--help') || ARGV.delete('-h')
+  puts `peerflix -h 2>&1`.sub(/^Usage:.+$/, USAGE)
+  exit -1
+end
+
+torrent = `#{PBPASTE}`
+
+command = [
+  'peerflix', torrent.shellescape, ARGV.collect(&:shellescape)
+].flatten.join(' ')
+
+exec command
