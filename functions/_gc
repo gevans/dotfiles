@@ -1,0 +1,2 @@
+#compdef gc
+_files -W $PROJECTS/go/src/github.com -/

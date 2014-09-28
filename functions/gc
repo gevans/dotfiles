@@ -1,0 +1,1 @@
+cd $PROJECTS/go/src/github.com/$1;
