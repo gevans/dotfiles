@@ -72,9 +72,10 @@ bind r source-file ~/.tmux.conf
 unbind ^a
 bind ^a select-pane -t :.+
 
-# Use different keys to split windows vertically and horizontally
-bind | split-window -h
-bind - split-window -v
+# Use different keys to split windows vertically and horizontally, keeping the
+# working directory of the current pane
+bind | split-window -h -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
 
 # SSH to host
 bind S command-prompt -p "ssh to:" "new-window -h %1 'ssh %1'"
