@@ -12,9 +12,7 @@ fi
 # Host - Compressed and color-coded per host_repr array
 # if not found, regular hostname in default color
 prompt_host() {
-  typeset -A host_repr
-  host_repr=('gevans-laptop' 'macbook-pro')
-  echo "@${host_repr[$(hostname)]:-$(hostname)}%{$reset_color%}"
+  echo "@${$(hostname | cut -f1 -d'.')}%{$reset_color%}"
 }
 
 # User - Color-coded by privileges
