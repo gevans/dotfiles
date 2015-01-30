@@ -27,8 +27,8 @@ do
   source $file
 done
 
-# Add ./bin to executables path
-export PATH="bin:$PATH"
+# Safely add ./bin to executables path
+export PATH=".git/safe/../../bin:$PATH"
 
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
