@@ -27,8 +27,9 @@ do
   source $file
 done
 
-# Safely add ./bin to executables path
-export PATH=".git/safe/../../bin:$PATH"
+# Add ~/bin and *whitelisted* ./bin to executables path
+# See https://twitter.com/tpope/status/165631968996900865
+export PATH=".git/safe/../../bin:$HOME/bin:$PATH"
 
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
